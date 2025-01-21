@@ -6,7 +6,7 @@
 #+export_exclude_tags: noexport
 #+property: HEADER-ARGS+ :eval no-export
 #+options: ^:{}
-Last updated Time-stamp: <2025-01-21 16:00:06>
+Last updated Time-stamp: <2025-01-21 16:02:31>
 # ===================================================================================
 # Hints:
 # ===================================================================================
@@ -93,7 +93,7 @@ Attention:
   - DO NOT RUN DANGER COMMANDS!!! (E.g. rm -rf *)
 
 Description:
-#+begin_src rs :host <your_machine> :path ~ :var today="Hello, human, today is `date '+%Y-%m-%d'`."
+#+begin_src rs :host <your_machine> :path ~ :var today="Hello, human, today is `date '+%Y-%m-%d'`." :exports both
   echo $today
 #+end_src
 
@@ -101,6 +101,6 @@ Description:
 : Hello, human, today is 2024-09-10.
 
 Change Log:
-  2024.09.10: Created this file.
-  2024.09.11: Fixed '^M' issue.
-  2024.09.14: Added ':file' param.
+  - 2024.09.10: Created this file.
+  - 2024.09.11: Fixed '^M' issue.
+  - 2024.09.14: Added ':file' param.

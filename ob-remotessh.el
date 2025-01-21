@@ -33,7 +33,7 @@
 ;;   - DO NOT RUN DANGER COMMANDS!!! (E.g. rm -rf *)
 ;;
 ;; Description:
-;; #+begin_src rs :host <your_machine> :path ~ :var today="Hello, human, today is `date '+%Y-%m-%d'`."
+;; #+begin_src rs :host <your_machine> :path ~ :var today="Hello, human, today is `date '+%Y-%m-%d'`." :exports both
 ;;   echo $today
 ;; #+end_src
 ;;
@@ -41,9 +41,9 @@
 ;; : Hello, human, today is 2024-09-10.
 ;;
 ;; Change Log:
-;;   2024.09.10: Created this file.
-;;   2024.09.11: Fixed '^M' issue.
-;;   2024.09.14: Added ':file' param.
+;;   - 2024.09.10: Created this file.
+;;   - 2024.09.11: Fixed '^M' issue.
+;;   - 2024.09.14: Added ':file' param.
 
 ;;; Code:
 
