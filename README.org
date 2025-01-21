@@ -1,0 +1,106 @@
+# -*- org-confirm-babel-evaluate: nil; eval: (org-sbe "startup-block"); -*-
+#+title: ob-remotessh
+#+author: zeit
+#+date: <2025-01-20 Mon 16:44:24>
+#+startup: latexpreview show2level
+#+export_exclude_tags: noexport
+#+property: HEADER-ARGS+ :eval no-export
+#+options: ^:{}
+Last updated Time-stamp: <2025-01-21 16:00:06>
+# ===================================================================================
+# Hints:
+# ===================================================================================
+* _Startup Block_                                                  :noexport:
+#+name: startup-block
+#+begin_src elisp :results silent
+  ;; ------------------------------------------------------------------
+  ; Format time-stamp.
+  (setq-local time-stamp-format "%Y-%02m-%02d %02H:%02M:%02S")
+
+  ;; ------------------------------------------------------------------
+  ; Define functions.
+  (defun get-comment ()
+    "Function to get the commentary part of 'ob-remotessh.el' file."
+    (let ((_ret nil))
+      (with-temp-buffer
+        (insert-file-contents "./ob-remotessh.el")
+        (setq _ret
+              (buffer-substring-no-properties
+               (re-search-forward ";;; Commentary:.*\n\n")
+               (re-search-forward "\n;;; Code:")
+               )
+              )
+        )
+      (setq _ret (replace-regexp-in-string "\n;;; Code:" "" _ret))
+      (setq _ret (replace-regexp-in-string "^;; ?" "" _ret))
+      )
+    )
+
+  (defun ob-remotessh-capture--hook (&optional sec-name)
+    "Hook function that runs after capture. Source code borrowed from
+  https://emacs.stackexchange.com/a/38354/38412."
+    (with-current-buffer (buffer-name)
+      (let* ((MATCH nil)
+             (SCOPE 'file)
+             (SKIP nil)
+             (sec-name (or sec-name "README")))
+        (org-map-entries
+         (lambda ()
+           (let ((name (nth 4 (org-heading-components))))
+             (if (string= name sec-name)
+                 (save-restriction
+                   (org-mark-subtree)
+                   (forward-line)
+                   (delete-region (region-beginning) (region-end))
+                   (insert (get-comment))
+                   ))
+             )) MATCH SCOPE SKIP)
+        (message "====> Updated the '%s' section!" sec-name)
+        )
+      )
+    )
+
+  ;; ------------------------------------------------------------------
+  ; Define a local org-capture template, to quickly modify & update the
+  ; "Usage" section.
+  (setq-local
+   org-capture-templates
+   (add-to-list 'org-capture-templates
+                '("a" "ob-remotessh.el" plain
+                  (file+regexp
+                   "~/.emacs.d/myscripts-dev/ob-remotessh/ob-remotessh.el"
+                   ";;; Commentary:"
+                   )
+                  "%?"
+                  :unnarrowed t
+                  :after-finalize (ob-remotessh-capture--hook)
+                  )
+                )
+   )
+
+  (ob-remotessh-capture--hook)
+#+end_src
+
+* README
+Run commands in HOST with RS babel.
+
+Borrowed some codes from the followings:
+  - https://git.sr.ht/~bzg/worg/tree/master/item/org-contrib/babel/ob-template.el
+  - https://github.com/rkiggen/ob-powershell
+
+Attention:
+  - To suppress banner message, touch a ~/.hushlogin file (in your home directory).
+  - DO NOT RUN DANGER COMMANDS!!! (E.g. rm -rf *)
+
+Description:
+#+begin_src rs :host <your_machine> :path ~ :var today="Hello, human, today is `date '+%Y-%m-%d'`."
+  echo $today
+#+end_src
+
+#+RESULTS:
+: Hello, human, today is 2024-09-10.
+
+Change Log:
+  2024.09.10: Created this file.
+  2024.09.11: Fixed '^M' issue.
+  2024.09.14: Added ':file' param.
