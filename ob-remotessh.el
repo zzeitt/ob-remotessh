@@ -51,6 +51,12 @@
 (add-to-list 'org-src-lang-modes '("rs" . sh))
 (add-to-list 'org-structure-template-alist '("r" . "src rs"))
 
+(defcustom org-babel-remotessh-connect-timeout
+  30
+  "The remote ssh connection timeout (in seconds)."
+  :type 'integer
+  :group 'org-babel-remotessh)
+
 (defun org-babel-expand-body:rs (body params)
   "Expand BODY according to PARAMS, return the expanded body."
   (let ((vars (org-babel--get-vars params)))
@@ -81,11 +87,13 @@
       (insert cmd-remote)
       )
     (setq cmd-local
-          (format "ssh -o ConnectTimeout=4 -T %s < %s %s"
+          (format "ssh -o ConnectTimeout=%d -T %s < %s %s"
+                  org-babel-remotessh-connect-timeout
                   host
                   (org-babel-process-file-name tmp-file)
                   (if out-file (format "> %s" out-file)
-                    "")))
+                    "")
+                  ))
     (message "[remotessh]===>tmp-file:   %s" tmp-file)
     (message "[remotessh]===>cmd-remote: %s" cmd-remote)
     (message "[remotessh]===>cmd-local:  %s" cmd-local)
