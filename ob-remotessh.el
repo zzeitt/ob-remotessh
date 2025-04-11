@@ -44,6 +44,10 @@
 ;;   - 2024.09.10: Created this file.
 ;;   - 2024.09.11: Fixed '^M' issue.
 ;;   - 2024.09.14: Added ':file' param.
+;;   - 2025.04.11: Added `org-babel-remotessh-connect-timeout' var.
+;;
+;; Last updated time-stamp: <2025-04-11 12:11:28>
+;;
 
 ;;; Code:
 
