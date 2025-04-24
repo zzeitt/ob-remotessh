@@ -7,7 +7,8 @@
 #+property: HEADER-ARGS+ :eval no-export
 #+options: ^:{}
 # ===================================================================================
-# Hints:
+# Hints: To sync this README with commentery in elisp file, run
+# org-capture 'a' to edit and sync.
 # ===================================================================================
 * _Startup Block_                                                  :noexport:
 #+name: startup-block
@@ -112,6 +113,7 @@ Change Log:
   - 2024.09.11: Fixed '^M' issue.
   - 2024.09.14: Added ':file' param.
   - 2025.04.11: Added `org-babel-remotessh-connect-timeout' var.
+  - 2025.04.24: Echo saved file path when ':file' is specified.
 
-Last updated time-stamp: <2025-04-11 12:11:28>
+Last updated time-stamp: <2025-04-24 10:38:38>
 

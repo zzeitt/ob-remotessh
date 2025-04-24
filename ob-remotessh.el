@@ -45,8 +45,9 @@
 ;;   - 2024.09.11: Fixed '^M' issue.
 ;;   - 2024.09.14: Added ':file' param.
 ;;   - 2025.04.11: Added `org-babel-remotessh-connect-timeout' var.
+;;   - 2025.04.24: Echo saved file path when ':file' is specified.
 ;;
-;; Last updated time-stamp: <2025-04-11 12:11:28>
+;; Last updated time-stamp: <2025-04-24 10:38:38>
 ;;
 
 ;;; Code:
@@ -82,6 +83,7 @@
          (path (cdr (assq :path params)))
          (cmd-remote "")
          (cmd-local "")
+         (res "")
          )
     (if path
         (setq body (format "cd %s && %s" path body)))
@@ -101,7 +103,12 @@
     (message "[remotessh]===>tmp-file:   %s" tmp-file)
     (message "[remotessh]===>cmd-remote: %s" cmd-remote)
     (message "[remotessh]===>cmd-local:  %s" cmd-local)
-    (org-babel-eval cmd-local ""))
+    (setq res (org-babel-eval cmd-local ""))
+    (if out-file
+        (message "[remotessh]===> File saved to '%s' successfully!" out-file)
+      res
+      )
+    )
   )
 
 (provide 'ob-remotessh)
